@@ -26,3 +26,15 @@ COPY . /var/www
 
 # Ensure optimized autoloader after copying app (in case of PSR changes)
 RUN composer dump-autoload --optimize --no-dev --classmap-authoritative --no-interaction || true
+
+# Add Nginx
+RUN apt-get install -y nginx
+
+# Copy your Nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose the HTTP port
+EXPOSE 80
+
+# Start both Nginx and PHP-FPM
+CMD service nginx start && php-fpm
