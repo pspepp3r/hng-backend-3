@@ -14,10 +14,13 @@ RUN apt-get update && apt-get install -y \
     vim \
     libicu-dev
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash \
-    && apt-get install nodejs -y
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install PHP dependencies (no dev deps in production build)
+RUN composer install --no-dev --no-interaction --optimize-autoloader --ansi --no-progress
+
+# Ensure optimized autoloader after copying app (in case of PSR changes)
+RUN composer dump-autoload --optimize --no-dev --classmap-authoritative --no-interaction
 
 RUN docker-php-ext-configure intl
 
