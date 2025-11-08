@@ -23,9 +23,3 @@ RUN composer install --no-dev --no-interaction --optimize-autoloader --ansi --no
 RUN composer dump-autoload --optimize --no-dev --classmap-authoritative --no-interaction
 
 RUN docker-php-ext-configure intl
-
-RUN groupadd --force -g $GROUP_ID $USER
-RUN useradd -ms /bin/bash --no-user-group -g $GROUP_ID -u 1337 $USER
-RUN usermod -u $USER_ID $USER
-
-USER $USER
